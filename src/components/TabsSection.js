@@ -7,10 +7,27 @@ export default function TabsSection() {
   const [loaded, setLoaded] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
+  // ✅ Load last tab from localStorage on mount
+  useEffect(() => {
+    const savedTab = localStorage.getItem("activeTab");
+    if (savedTab) {
+      setActive(savedTab);
+    }
+  }, []);
+
+  // ✅ Save active tab to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("activeTab", active);
+  }, [active]);
+
   // Load Elfsight script once for Twitter widget
   useEffect(() => {
     if (active === "twitter") {
-      if (!document.querySelector("script[src='https://elfsightcdn.com/platform.js']")) {
+      if (
+        !document.querySelector(
+          "script[src='https://elfsightcdn.com/platform.js']"
+        )
+      ) {
         const script = document.createElement("script");
         script.src = "https://elfsightcdn.com/platform.js";
         script.async = true;
@@ -114,37 +131,39 @@ export default function TabsSection() {
             </div>
           )}
 
-          {/* ✅ News Feed via Google RSS */}
+          {/* ✅ News Feed via Google RSS with same glass effect */}
           {active === "news" && (
-            <div className="news-feed max-h-96 overflow-y-auto scrollbar-thin">
-              {news.loading && (
-                <div className="p-4 text-slate-200">Loading...</div>
-              )}
-              {news.error && (
-                <div className="p-4 text-red-400">{news.error}</div>
-              )}
-              {!news.loading &&
-                news.items.map((it, i) => (
-                  <div
-                    key={i}
-                    className="border-b last:border-b-0 border-white/6 p-3"
-                  >
-                    <a
-                      href={it.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="font-semibold text-slate-100 block"
+            <div className="rounded-xl glass-card p-2 shadow-md border border-white/5 h-full">
+              <div className="news-feed max-h-96 overflow-y-auto scrollbar-thin">
+                {news.loading && (
+                  <div className="p-4 text-slate-200">Loading...</div>
+                )}
+                {news.error && (
+                  <div className="p-4 text-red-400">{news.error}</div>
+                )}
+                {!news.loading &&
+                  news.items.map((it, i) => (
+                    <div
+                      key={i}
+                      className="border-b last:border-b-0 border-white/6 p-3"
                     >
-                      {it.title}
-                    </a>
-                    <span className="text-sm text-slate-400">
-                      {new Date(it.pubDate).toLocaleDateString()}
-                    </span>
-                  </div>
-                ))}
-              {!news.loading && news.items.length === 0 && !news.error && (
-                <div className="p-4 text-slate-200">No recent news found.</div>
-              )}
+                      <a
+                        href={it.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-semibold text-slate-100 block"
+                      >
+                        {it.title}
+                      </a>
+                      <span className="text-sm text-slate-400">
+                        {new Date(it.pubDate).toLocaleDateString()}
+                      </span>
+                    </div>
+                  ))}
+                {!news.loading && news.items.length === 0 && !news.error && (
+                  <div className="p-4 text-slate-200">No recent news found.</div>
+                )}
+              </div>
             </div>
           )}
         </div>

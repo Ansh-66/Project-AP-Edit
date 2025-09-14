@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { id: 'stats', label: 'Stats' },
   { id: 'charts', label: 'Charts' },
   { id: 'crime-data', label: 'Crime Data' },
-  { id: 'news', label: 'News' },
+  { id: 'news', label: 'Updates' },
 ];
 
 export default function Navbar() {
