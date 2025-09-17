@@ -20,21 +20,22 @@ export default function TabsSection() {
     localStorage.setItem("activeTab", active);
   }, [active]);
 
-  // Load Elfsight script once for Twitter widget
-  useEffect(() => {
-    if (active === "twitter") {
-      if (
-        !document.querySelector(
-          "script[src='https://elfsightcdn.com/platform.js']"
-        )
-      ) {
-        const script = document.createElement("script");
-        script.src = "https://elfsightcdn.com/platform.js";
-        script.async = true;
-        document.body.appendChild(script);
-      }
-    }
-  }, [active]);
+  // Load Elfsight script once for Twitter widget - This code has been commented out for now to prevent multiple views of the twitter widget, Use only for demonstration purpose.
+  
+  // useEffect(() => {
+  //   if (active === "twitter") {
+  //     if (
+  //       !document.querySelector(
+  //         "script[src='https://elfsightcdn.com/platform.js']"
+  //       )
+  //     ) {
+  //       const script = document.createElement("script");
+  //       script.src = "https://elfsightcdn.com/platform.js";
+  //       script.async = true;
+  //       document.body.appendChild(script);
+  //     }
+  //   }
+  // }, [active]);
 
   // Load News once
   useEffect(() => {
